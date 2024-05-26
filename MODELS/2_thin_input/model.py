@@ -20,8 +20,8 @@ def split_dataset(data, labels):
 
 # load data
 # Load the .npz file
-train_data = np.load('../emnist_bymerge_train_dataset.npz')
-test_data = np.load('../emnist_bymerge_test_dataset.npz')
+train_data = np.load('../reviewed_train_dataset.npz')
+test_data = np.load('../reviewed_test_dataset.npz')
 
 # Access the arrays in the .npz file
 train_images = train_data['thin_images']
@@ -30,9 +30,17 @@ train_labels = train_data['labels']
 test_images = test_data['thin_images']
 test_labels = test_data['labels']
 
-#print(np.unique(train_images[0]))
+value_mapping = {14: 10, 16: 11, 23: 12}
 y_train = train_labels
+for old_value, new_value in value_mapping.items():
+    y_train[y_train == old_value] = new_value
+print(np.unique(y_train))
+
 y_test = test_labels
+for old_value, new_value in value_mapping.items():
+    y_test[y_test == old_value] = new_value
+print(np.unique(y_test))
+
 
 # NORMALIZE THE DATA
 X_train = tf.keras.utils.normalize(train_images, axis = 1)
@@ -49,17 +57,17 @@ model = Sequential()
 model.add(Input(shape = X_trainr.shape[1:]))
 
 # First Convolution Layer
-model.add(Conv2D(32, kernel_size=(3,3)))
+model.add(Conv2D(32, kernel_size=(3,3), padding="same"))
 model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 # Second Convolution Layer
-model.add(Conv2D(64, kernel_size=(3,3)))
+model.add(Conv2D(64, kernel_size=(3,3), padding="same"))
 model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 # Third Convolution Layer
-model.add(Conv2D(128, kernel_size=(3,3)))
+model.add(Conv2D(128, kernel_size=(3,3), padding="same"))
 model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
@@ -78,7 +86,7 @@ model.add(Dense(32))
 model.add(Activation("relu"))
 
 # CLASSIFICATION LAYER
-model.add(Dense(47))
+model.add(Dense(13))
 model.add(Activation("softmax"))
 
 

@@ -44,9 +44,11 @@ X_test = tf.keras.utils.normalize(test_images, axis = 1)
 X_train = np.array(X_train).reshape(-1, 28, 28, 1)
 X_test = np.array(X_test).reshape(-1, 28, 28, 1)
 
-print("I GOT HERE!")
+print(f"the number of training images is {len(X_train)}")
+print(f"the number of testing images is {len(X_test)}")
 
 
+"""
 # CREATING A DEEP NEURAL NETWORK
 model = Sequential()
 
@@ -110,3 +112,4 @@ model.fit(
 #test_loss, test_acc = model.evaluate(X_testr, y_test)
 #print("Test loss on test samples", test_loss)
 #print("Validation Accuracy on test samples", test_acc)
+"""
