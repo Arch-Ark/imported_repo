@@ -32,9 +32,18 @@ train_labels = train_data['labels']
 test_images = test_data['binary_images']
 test_labels = test_data['labels']
 
-#print(np.unique(train_images[0]))
+
+value_mapping = {14: 10, 16: 11, 23: 12}
 y_train = train_labels
+for old_value, new_value in value_mapping.items():
+    y_train[y_train == old_value] = new_value
+
+print(np.unique(y_train))
+
 y_test = test_labels
+for old_value, new_value in value_mapping.items():
+    y_test[y_test == old_value] = new_value
+print(np.unique(y_test))
 
 # NORMALIZE THE DATA
 X_train = tf.keras.utils.normalize(train_images, axis = 1)
@@ -44,8 +53,6 @@ X_test = tf.keras.utils.normalize(test_images, axis = 1)
 X_trainr = np.array(X_train).reshape(-1, 28, 28, 1)
 X_testr = np.array(X_test).reshape(-1, 28, 28, 1)
 
-print("I GOT HERE!")
-
 # CREATING A DEEP NEURAL NETWORK
 model = Sequential()
 
@@ -53,17 +60,17 @@ model = Sequential()
 model.add(Input(shape = X_trainr.shape[1:]))
 
 # First Convolution Layer
-model.add(Conv2D(32, kernel_size=(3,3)))
+model.add(Conv2D(32, kernel_size=(3,3), padding="same"))
 model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 # Second Convolution Layer
-model.add(Conv2D(64, kernel_size=(3,3)))
+model.add(Conv2D(64, kernel_size=(3,3), padding="same"))
 model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 # Third Convolution Layer
-model.add(Conv2D(128, kernel_size=(3,3)))
+model.add(Conv2D(128, kernel_size=(3,3), padding="same"))
 model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
@@ -82,13 +89,12 @@ model.add(Dense(32))
 model.add(Activation("relu"))
 
 # CLASSIFICATION LAYER
-model.add(Dense(47))
+model.add(Dense(13))
 model.add(Activation("softmax"))
 
 # THE SUMMARY OF THE MODEL 
-model.summary()
+#model.summary()
 
-"""
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Define callbacks
@@ -110,5 +116,3 @@ model.fit(
 #test_loss, test_acc = model.evaluate(X_testr, y_test)
 #print("Test loss on test samples", test_loss)
 #print("Validation Accuracy on test samples", test_acc)
-
-"""
