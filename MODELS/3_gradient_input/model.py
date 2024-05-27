@@ -85,7 +85,7 @@ model.add(Dense(32))
 model.add(Activation("relu"))
 
 # CLASSIFICATION LAYER
-model.add(Dense(47))
+model.add(Dense(13))
 model.add(Activation("softmax"))
 
 
