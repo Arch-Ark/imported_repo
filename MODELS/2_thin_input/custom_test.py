@@ -56,7 +56,7 @@ def center_pad_image(img, size=28, pad=4):
     return resized_image
 
 
-model = load_model('model0.keras')
+model = load_model('model.keras')
 
 test_data = np.load('../reviewed_test_dataset.npz')
 test_labels = test_data['labels']
@@ -70,8 +70,8 @@ for old_value, new_value in value_mapping.items():
     y_test[y_test == old_value] = new_value
 
 # NORMALIZE
-#test_image = tf.keras.utils.normalize(test_image)
-test_image = test_image.astype('float32')/255.0
+test_image = tf.keras.utils.normalize(test_image)
+#test_image = test_image.astype('float32')/255.0
 # RESHAPE
 test_image = test_image.reshape(-1, 28, 28, 1)
 

@@ -56,7 +56,7 @@ def center_pad_image(img, size=28, pad=4):
     return resized_image
 
 
-model = load_model('model0.keras')
+model = load_model('model.keras')
 
 test_data = np.load('../reviewed_test_dataset.npz')
 test_labels = test_data['labels']
