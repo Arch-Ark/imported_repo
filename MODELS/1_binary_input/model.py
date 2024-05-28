@@ -43,7 +43,6 @@ for old_value, new_value in value_mapping.items():
 X_train = train_images.astype('float32') / 255.0
 X_test = test_images.astype('float32') / 255.0
 
-
 # RESHAPE THE IMAGE TO MAKE IT SUITABLE FOR APPLYING CONVOLUTION OPERATION
 X_trainr = np.array(X_train).reshape(-1, 28, 28, 1)
 X_testr = np.array(X_test).reshape(-1, 28, 28, 1)
@@ -106,7 +105,6 @@ model.fit(
     validation_split= 0.3,
     callbacks=[earlystopper, checkpoint, trainLogger, reduceLROnPlat, tb_callback],
     )
-
 
 # EVALUATING THE TESTING DATA
 #test_loss, test_acc = model.evaluate(X_testr, y_test)
