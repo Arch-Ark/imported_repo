@@ -103,14 +103,17 @@ fourth = scores[3]
 fifth = scores[4]
 sixth = scores[5]
 
-test_digit = binarize_image(second.reshape(28,28))
+test_digit = binarize_image(sixth.reshape(28,28))
 
 ########################################################################
-# Rotate the image
-test_digit = cv2.rotate(test_digit, cv2.ROTATE_90_CLOCKWISE)
+# flip
+test_digit = cv2.flip(test_digit, 1)
+
+# rotate
+test_digit = cv2.rotate(test_digit, cv2.ROTATE_90_COUNTERCLOCKWISE)
 #########################################################################
 
-#test_digit = center_pad_image(test_digit)
+test_digit = center_pad_image(test_digit)
 
 test_digit = tf.keras.utils.normalize(test_digit)
 test_digit = test_digit.reshape(-1, 28, 28, 1)
