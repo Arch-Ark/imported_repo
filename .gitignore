@@ -7,3 +7,4 @@ _datasets/gzip.zip
 _datasets/IMPORTANT_DATASET/emnist_bymerge_test_dataset.npz
 _datasets/IMPORTANT_DATASET/emnist_bymerge_train_dataset.npz
 MODELS/emnist*.npz
+MODELS/reviewed_*.npz
