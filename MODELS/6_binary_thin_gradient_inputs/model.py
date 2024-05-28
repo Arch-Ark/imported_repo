@@ -17,8 +17,12 @@ def split_dataset(data, labels):
     return X_train, X_test, y_train, y_test
 
 # Load data
-train_data = np.load('../emnist_bymerge_train_dataset.npz')
-test_data = np.load('../emnist_bymerge_test_dataset.npz')
+#train_data = np.load('../emnist_bymerge_train_dataset.npz')
+#test_data = np.load('../emnist_bymerge_test_dataset.npz')
+
+# Load the .npz file
+train_data = np.load('../reviewed_train_dataset.npz')
+test_data = np.load('../reviewed_test_dataset.npz')
 
 # INPUT PIPELINE FOR BINARY INPUT
 train_bin_images = train_data['binary_images']
@@ -26,8 +30,16 @@ train_labels = train_data['labels']
 test_bin_images = test_data['binary_images']
 test_labels = test_data['labels']
 
+value_mapping = {14: 10, 16: 11, 23: 12}
 y_train = train_labels
+for old_value, new_value in value_mapping.items():
+    y_train[y_train == old_value] = new_value
+print(np.unique(y_train))
+
 y_test = test_labels
+for old_value, new_value in value_mapping.items():
+    y_test[y_test == old_value] = new_value
+print(np.unique(y_test))
 
 # Normalize the data
 X_train_bin = tf.keras.utils.normalize(train_bin_images, axis=1)
@@ -106,7 +118,7 @@ combined = concatenate([x_bin, x_grad, x_thin])
 # Shared dense layers
 z = Dense(128, activation='relu')(combined)
 z = Dense(64, activation='relu')(z)
-output = Dense(47, activation='softmax')(z) 
+output = Dense(13, activation='softmax')(z) 
 
 # Model definition
 model = Model(inputs=[input_bin, input_grad, input_thin], outputs=output)

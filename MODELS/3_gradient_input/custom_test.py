@@ -56,7 +56,7 @@ def center_pad_image(img, size=28, pad=4):
     return resized_image
 
 
-model = load_model('model.keras')
+model = load_model('2_99.25_99.321.keras')
 
 test_data = np.load('../reviewed_test_dataset.npz')
 test_labels = test_data['labels']
@@ -77,19 +77,23 @@ test_image = test_image.reshape(-1, 28, 28, 1)
 
 predictions = model.predict(test_image)
 
-print(y_test[test_index])
-print(predictions)
-print(predictions[0].max())
+#print(y_test[test_index])
+#print(predictions)
+#print(predictions[0].max())
 
 #label = np.argmax(test_image, axis=1)
 
 #print(label[0])
 
 print('###############################################################\n')
-# BINARIZE THE images
-def binarize_image(image):
-    _, binary_image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    return binary_image
+# GRADIENT MAGNITUDE
+def compute_gradient_magnitude(image):
+    _, binarized = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    Gx = cv2.Sobel(binarized, cv2.CV_64F, 1, 0, ksize=3)
+    Gy = cv2.Sobel(binarized, cv2.CV_64F, 0, 1, ksize=3)
+    gradient_magnitude = np.sqrt(Gx**2 + Gy**2)
+    gradient_magnitude = cv2.normalize(gradient_magnitude, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    return gradient_magnitude
 
 loaded_arrays = np.load('../custom_scores.npz')
 scores = []
@@ -103,7 +107,7 @@ fourth = scores[3]
 fifth = scores[4]
 sixth = scores[5]
 
-test_digit = binarize_image(sixth.reshape(28,28))
+test_digit = compute_gradient_magnitude(second.reshape(28,28))
 
 ########################################################################
 # flip
@@ -121,6 +125,6 @@ test_digit = test_digit.reshape(-1, 28, 28, 1)
 pred = model.predict(test_digit)
 print(pred[0])
 print(pred[0].max())
-#label = np.argmax(test_digit)
+label = np.argmax(pred[0])
 
-#print(label)
+print(label)

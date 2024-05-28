@@ -56,7 +56,7 @@ def center_pad_image(img, size=28, pad=4):
     return resized_image
 
 
-model = load_model('model0.keras')
+model = load_model('better_model.keras')
 
 test_data = np.load('../reviewed_test_dataset.npz')
 test_labels = test_data['labels']
@@ -70,16 +70,16 @@ for old_value, new_value in value_mapping.items():
     y_test[y_test == old_value] = new_value
 
 # NORMALIZE
-#test_image = tf.keras.utils.normalize(test_image)
-test_image = test_image.astype('float32')/255.0
+test_image = tf.keras.utils.normalize(test_image)
+#test_image = test_image.astype('float32')/255.0
 # RESHAPE
 test_image = test_image.reshape(-1, 28, 28, 1)
 
 predictions = model.predict(test_image)
 
-print(y_test[test_index])
-print(predictions)
-print(predictions[0].max())
+#print(y_test[test_index])
+#print(predictions)
+#print(predictions[0].max())
 
 #label = np.argmax(test_image, axis=1)
 
@@ -103,7 +103,7 @@ fourth = scores[3]
 fifth = scores[4]
 sixth = scores[5]
 
-test_digit = binarize_image(sixth.reshape(28,28))
+test_digit = binarize_image(second.reshape(28,28))
 
 ########################################################################
 # flip
@@ -121,6 +121,6 @@ test_digit = test_digit.reshape(-1, 28, 28, 1)
 pred = model.predict(test_digit)
 print(pred[0])
 print(pred[0].max())
-#label = np.argmax(test_digit)
+label = np.argmax(pred[0])
 
-#print(label)
+print(label)

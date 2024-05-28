@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import tensorflow as tf
+from skimage.morphology import skeletonize
 
 from tensorflow.keras.models import load_model
 
@@ -77,19 +78,23 @@ test_image = test_image.reshape(-1, 28, 28, 1)
 
 predictions = model.predict(test_image)
 
-print(y_test[test_index])
-print(predictions)
-print(predictions[0].max())
+#print(y_test[test_index])
+#print(predictions)
+#print(predictions[0].max())
 
 #label = np.argmax(test_image, axis=1)
 
 #print(label[0])
 
 print('###############################################################\n')
-# BINARIZE THE images
-def binarize_image(image):
+# THIN THE IMAGE
+def thinning(image):
+    # Ensure the image is binary
     _, binary_image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    return binary_image
+    # Perform skeletonization (thinning)
+    skeleton = skeletonize(binary_image / 255)
+    skeleton = (skeleton * 255).astype(np.uint8)
+    return skeleton
 
 loaded_arrays = np.load('../custom_scores.npz')
 scores = []
@@ -103,7 +108,7 @@ fourth = scores[3]
 fifth = scores[4]
 sixth = scores[5]
 
-test_digit = binarize_image(sixth.reshape(28,28))
+test_digit = thinning(fourth[1].reshape(28,28))
 
 ########################################################################
 # flip
@@ -121,6 +126,6 @@ test_digit = test_digit.reshape(-1, 28, 28, 1)
 pred = model.predict(test_digit)
 print(pred[0])
 print(pred[0].max())
-#label = np.argmax(test_digit)
+label = np.argmax(pred[0])
 
-#print(label)
+print(label)
