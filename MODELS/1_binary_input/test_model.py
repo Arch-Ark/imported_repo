@@ -14,7 +14,7 @@ from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D,
 from tensorflow.keras import regularizers
 
 from tensorflow.keras.models import load_model
-model = load_model('model.keras')
+model = load_model('model0.keras')
 
 # split function
 def split_dataset(data, labels):
@@ -28,7 +28,7 @@ test_data = np.load('../reviewed_test_dataset.npz')
 test_images = test_data['binary_images']
 test_labels = test_data['labels']
 
-
+# NORMALIZE THE DATA SET
 X_test = tf.keras.utils.normalize(test_images, axis = 1)
 
 value_mapping = {14: 10, 16: 11, 23: 12}
@@ -37,9 +37,8 @@ for old_value, new_value in value_mapping.items():
     y_test[y_test == old_value] = new_value
 print(np.unique(y_test))
 
-
+# RE SHAPED THE DATASET
 X_testr = np.array(X_test).reshape(-1, 28, 28, 1)
-
 
 # EVALUATING THE TESTING DATA
 test_loss, test_acc = model.evaluate(X_testr, y_test)

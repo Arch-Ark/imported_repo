@@ -13,8 +13,6 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D, Input
 from tensorflow.keras import regularizers
 
-print("I HAVE STARTED")
-
 # split function
 def split_dataset(data, labels):
     X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
@@ -32,22 +30,19 @@ train_labels = train_data['labels']
 test_images = test_data['binary_images']
 test_labels = test_data['labels']
 
-
 value_mapping = {14: 10, 16: 11, 23: 12}
 y_train = train_labels
 for old_value, new_value in value_mapping.items():
     y_train[y_train == old_value] = new_value
 
-print(np.unique(y_train))
-
 y_test = test_labels
 for old_value, new_value in value_mapping.items():
     y_test[y_test == old_value] = new_value
-print(np.unique(y_test))
 
 # NORMALIZE THE DATA
-X_train = tf.keras.utils.normalize(train_images, axis = 1)
-X_test = tf.keras.utils.normalize(test_images, axis = 1)
+X_train = train_images.astype('float32') / 255.0
+X_test = test_images.astype('float32') / 255.0
+
 
 # RESHAPE THE IMAGE TO MAKE IT SUITABLE FOR APPLYING CONVOLUTION OPERATION
 X_trainr = np.array(X_train).reshape(-1, 28, 28, 1)
@@ -111,6 +106,7 @@ model.fit(
     validation_split= 0.3,
     callbacks=[earlystopper, checkpoint, trainLogger, reduceLROnPlat, tb_callback],
     )
+
 
 # EVALUATING THE TESTING DATA
 #test_loss, test_acc = model.evaluate(X_testr, y_test)
