@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-loaded_arrays = np.load('./students_scripts/student3_matric.npz')
+loaded_arrays = np.load('./students_scripts/student4_matric.npz')
 
 for arr in loaded_arrays:
     print(arr)

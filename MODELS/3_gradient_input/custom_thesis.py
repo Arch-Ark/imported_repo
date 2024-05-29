@@ -95,7 +95,7 @@ def compute_gradient_magnitude(image):
     gradient_magnitude = cv2.normalize(gradient_magnitude, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
     return gradient_magnitude
 
-loaded_arrays = np.load('../students_scripts/student2_scores.npz')
+loaded_arrays = np.load('../students_scripts/student4_scores.npz')
 
 #test_digit = loaded_arrays['arr_1']
 

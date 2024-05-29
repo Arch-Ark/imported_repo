@@ -96,7 +96,7 @@ def thinning(image):
     skeleton = (skeleton * 255).astype(np.uint8)
     return skeleton
 
-loaded_arrays = np.load('../students_scripts/student3_matric.npz')
+loaded_arrays = np.load('../students_scripts/student4_matric.npz')
 
 #test_digit = loaded_arrays['arr_1']
 
