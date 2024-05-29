@@ -91,7 +91,7 @@ def binarize_image(image):
     _, binary_image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     return binary_image
 
-loaded_arrays = np.load('../students_scripts/student3_matric.npz')
+loaded_arrays = np.load('../students_scripts/student4_scores.npz')
 
 #test_digit = loaded_arrays['arr_1']
 

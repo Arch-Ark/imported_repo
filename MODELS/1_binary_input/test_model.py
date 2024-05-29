@@ -14,7 +14,7 @@ from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D,
 from tensorflow.keras import regularizers
 
 from tensorflow.keras.models import load_model
-model = load_model('model0.keras')
+model = load_model('better_model.keras')
 
 # split function
 def split_dataset(data, labels):
@@ -44,3 +44,18 @@ X_testr = np.array(X_test).reshape(-1, 28, 28, 1)
 test_loss, test_acc = model.evaluate(X_testr, y_test)
 print("Test loss on test samples", test_loss)
 print("Validation Accuracy on test samples", test_acc)
+
+# PREDICT THE LABELS
+y_pred = model.predict_classes(X_testr)
+
+# CALCULATE METRICS
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, average='weighted')
+recall = recall_score(y_test, y_pred, average='weighted')
+f1 = f1_score(y_test, y_pred, average='weighted')
+
+# PRINT METRICS
+print("Accuracy:", accuracy)
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1-score:", f1)
