@@ -14,7 +14,7 @@ from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D,
 from tensorflow.keras import regularizers
 
 from tensorflow.keras.models import load_model
-model = load_model('model.keras')
+model = load_model('2_99.25_99.321.keras')
 
 # split function
 def split_dataset(data, labels):
@@ -23,7 +23,7 @@ def split_dataset(data, labels):
 
 # load data
 # Load the .npz file
-test_data = np.load('../emnist_bymerge_test_dataset.npz')
+test_data = np.load('../reviewed_test_dataset.npz')
 
 test_images = test_data['gradient_images']
 test_labels = test_data['labels']
@@ -37,6 +37,35 @@ X_testr = np.array(X_test).reshape(-1, 28, 28, 1)
 
 
 # EVALUATING THE TESTING DATA
-test_loss, test_acc = model.evaluate(X_testr, y_test)
-print("Test loss on test samples", test_loss)
-print("Validation Accuracy on test samples", test_acc)
+#test_loss, test_acc = model.evaluate(X_testr, y_test)
+#print("Test loss on test samples", test_loss)
+#print("Validation Accuracy on test samples", test_acc)
+
+
+# PREDICT PROBABILITIES
+y_pred_prob = model.predict(X_testr)
+# CONVERT PROBABILITIES TO CLASS LABELS
+y_pred = np.argmax(y_pred_prob, axis=1)
+
+print(len(f'lenth of y_pred{y_pred}'))
+print(len(f'lenth of y_test{y_test}'))
+
+# CALCULATE METRICS
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, average='weighted')
+recall = recall_score(y_test, y_pred, average='weighted')
+f1 = f1_score(y_test, y_pred, average='weighted')
+
+# PRINT METRICS
+print("Accuracy:", accuracy)
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1-score:", f1)
+
+# Assuming y_test contains the true labels and y_pred contains the predicted labels
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+# Save confusion matrix to a text file
+np.savetxt('2_gradient_confusion_matrix.txt', conf_matrix, fmt='%d')
+
+print("Confusion matrix saved to confusion_matrix.txt")
